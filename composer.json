@@ -1,0 +1,40 @@
+{
+  "name": "bencarr/entry-password",
+  "description": "Password-protect individual entries with a simple password outside of Craft’s user authentication system",
+  "type": "craft-plugin",
+  "version": "1.0.0",
+  "keywords": [
+    "craft",
+    "cms",
+    "craftcms",
+    "craft-plugin",
+    "entry password"
+  ],
+  "support": {
+    "docs": "https://github.com/bencarr/craft-entrypassword/blob/master/README.md",
+    "issues": "https://github.com/bencarr/craft-entrypassword/issues"
+  },
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Ben Carr",
+      "homepage": "https://bencarr.me"
+    }
+  ],
+  "require": {
+    "craftcms/cms": "^3.0.0-RC1"
+  },
+  "autoload": {
+    "psr-4": {
+      "bencarr\\entrypassword\\": "src/"
+    }
+  },
+  "extra": {
+    "name": "Entry Password",
+    "handle": "entry-password",
+    "hasCpSettings": false,
+    "hasCpSection": false,
+    "changelogUrl": "https://raw.githubusercontent.com/bencarr/craft-entrypassword/master/CHANGELOG.md",
+    "class": "bencarr\\entrypassword\\EntryPassword"
+  }
+}
