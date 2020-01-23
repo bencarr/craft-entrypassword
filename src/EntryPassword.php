@@ -67,14 +67,6 @@ class EntryPassword extends Plugin
         );
 
         Event::on(
-            UrlManager::class,
-            UrlManager::EVENT_REGISTER_CP_URL_RULES,
-            function(RegisterUrlRulesEvent $event) {
-                $event->rules['cpActionTrigger1'] = 'entry-password/validate/do-something';
-            }
-        );
-
-        Event::on(
             Fields::class,
             Fields::EVENT_REGISTER_FIELD_TYPES,
             function(RegisterComponentTypesEvent $event) {
@@ -98,6 +90,17 @@ class EntryPassword extends Plugin
                 $event->behaviors[$this->name] = EntryPasswordBehaviors::class;
             }
         );
+
+        Craft::$app->view->hook('cp.entries.edit.settings', function(array &$context) {
+            /** @var Entry $entry */
+            $entry = $context['entry'];
+
+            /** @var EntryPasswordField|null $field */
+            $field = $entry->getEntryPasswordField();
+            if ($field && $field->displaysInSidebar) {
+                return $field->getSidebarInputHtml($entry->getFieldValue($field->handle));
+            }
+        });
 
         Craft::info(
             Craft::t(

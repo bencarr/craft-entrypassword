@@ -96,6 +96,6 @@ class CookieService extends Component
         $name = $this->getCookieName($entry);
         $cookie = Craft::$app->getRequest()->cookies->get($name);
 
-        return $cookie->value === $entry->getEntryPasswordFieldValue();
+        return $cookie && $cookie->value === $entry->getEntryPasswordFieldValue();
     }
 }

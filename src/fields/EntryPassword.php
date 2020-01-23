@@ -6,12 +6,29 @@ use bencarr\entrypassword\assetbundles\entrypassword\EntryPasswordAsset;
 use Craft;
 use craft\base\ElementInterface;
 use craft\base\Field;
-use craft\helpers\Json;
 use yii\db\Schema;
 
 class EntryPassword extends Field
 {
     // Public Properties
+    // =========================================================================
+
+    /**
+     * @var bool
+     */
+    public $requiredForAuthenticatedUsers = false;
+
+    /**
+     * @var integer
+     */
+    public $cookieExpiration = 0;
+
+    /**
+     * @var bool
+     */
+    public $displaysInSidebar = true;
+
+    // Static Methods
     // =========================================================================
 
     /**
@@ -22,18 +39,6 @@ class EntryPassword extends Field
         return Craft::t('entry-password', 'Entry Password');
     }
 
-    /**
-     * @var bool
-     */
-    public $requiredForAuthenticatedUsers = false;
-
-    // Static Methods
-    // =========================================================================
-    /**
-     * @var integer
-     */
-    public $cookieExpiration = 0;
-
     // Public Methods
     // =========================================================================
 
@@ -43,12 +48,10 @@ class EntryPassword extends Field
     public function rules()
     {
         $rules = parent::rules();
-        $rules = array_merge($rules, [
-            ['requiredForAuthenticatedUsers', 'boolean'],
-            ['requiredForAuthenticatedUsers', 'default', 'value' => false],
-            ['cookieExpiration', 'integer'],
-            ['cookieExpiration', 'default', 'value' => 0],
-        ]);
+        $rules[] = [['requiredForAuthenticatedUsers'], 'boolean'];
+        $rules[] = [['cookieExpiration'], 'integer'];
+        $rules[] = [['displaysInSidebar'], 'boolean'];
+
         return $rules;
     }
 
@@ -95,33 +98,40 @@ class EntryPassword extends Field
      */
     public function getInputHtml($value, ElementInterface $element = null): string
     {
+        return Craft::$app->getView()->renderTemplate(
+            'entry-password/_components/fields/EntryPassword_input',
+            $this->getInputContext([
+                'value' => $value,
+            ]),
+            );
+    }
+
+    public function getSidebarInputHtml($value)
+    {
         // Register our asset bundle
         Craft::$app->getView()->registerAssetBundle(EntryPasswordAsset::class);
 
+        // Render the input template
+        return Craft::$app->getView()->renderTemplate(
+            'entry-password/_components/fields/EntryPassword_sidebarInput',
+            $this->getInputContext([
+                'value' => $value,
+            ]),
+            );
+    }
+
+    protected function getInputContext(array $context = [])
+    {
         // Get our id and namespace
         $id = Craft::$app->getView()->formatInputId($this->handle);
         $namespacedId = Craft::$app->getView()->namespaceInputId($id);
 
-        // Variables to pass down to our field JavaScript to let it namespace properly
-        $jsonVars = [
-            'id' => $id,
+        return array_merge([
+            'static' => true,
             'name' => $this->handle,
-            'namespace' => $namespacedId,
-            'prefix' => Craft::$app->getView()->namespaceInputId(''),
-        ];
-        $jsonVars = Json::encode($jsonVars);
-        Craft::$app->getView()->registerJs("$('#{$namespacedId}-field').EntryPasswordEntryPassword(" . $jsonVars . ");");
-
-        // Render the input template
-        return Craft::$app->getView()->renderTemplate(
-            'entry-password/_components/fields/EntryPassword_input',
-            [
-                'name' => $this->handle,
-                'value' => $value,
-                'field' => $this,
-                'id' => $id,
-                'namespacedId' => $namespacedId,
-            ]
-        );
+            'field' => $this,
+            'id' => $id,
+            'namespacedId' => $namespacedId,
+        ], $context);
     }
 }
