@@ -47,7 +47,9 @@ class CookieService extends Component
 
     protected function getCookieValue(Entry $entry)
     {
-        return $entry->getEntryPasswordFieldValue();
+        $password = $entry->getEntryPasswordFieldValue();
+
+        return Craft::$app->getSecurity()->maskToken($password);
     }
 
     protected function getCookieExpiration(Entry $entry)
@@ -95,7 +97,12 @@ class CookieService extends Component
     {
         $name = $this->getCookieName($entry);
         $cookie = Craft::$app->getRequest()->cookies->get($name);
+        if ($cookie) {
+            $value = Craft::$app->getSecurity()->unmaskToken($cookie->value);
 
-        return $cookie && $cookie->value === $entry->getEntryPasswordFieldValue();
+            return $value === $entry->getEntryPasswordFieldValue();
+        }
+
+        return false;
     }
 }
