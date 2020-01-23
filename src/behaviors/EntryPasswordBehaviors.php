@@ -4,7 +4,7 @@ namespace bencarr\entrypassword\behaviors;
 
 use bencarr\entrypassword\EntryPassword;
 use bencarr\entrypassword\fields\EntryPassword as EntryPasswordField;
-use craft\base\Field;
+use Craft;
 use craft\elements\Entry;
 use craft\helpers\ArrayHelper;
 use yii\base\Behavior;
@@ -16,8 +16,19 @@ class EntryPasswordBehaviors extends Behavior
 {
     public function requiresPassword()
     {
-        return $this->isPasswordProtected()
-            && !EntryPassword::getInstance()->cookie->isValid($this->owner);
+        if (!$this->isPasswordProtected()) {
+            return false;
+        }
+
+        if (EntryPassword::getInstance()->cookie->isValid($this->owner)) {
+            return false;
+        }
+
+        if (Craft::$app->getUser()->getIsAdmin()) {
+            return $this->getEntryPasswordField()->requiredForAuthenticatedUsers;
+        }
+
+        return true;
     }
 
     public function isPasswordProtected()
@@ -36,7 +47,7 @@ class EntryPasswordBehaviors extends Behavior
     }
 
     /**
-     * @return Field|null
+     * @return EntryPasswordField|null
      */
     public function getEntryPasswordField()
     {
