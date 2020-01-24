@@ -3,7 +3,7 @@
 namespace bencarr\entrypassword;
 
 use bencarr\entrypassword\behaviors\EntryPasswordBehaviors;
-use bencarr\entrypassword\fields\EntryPassword as EntryPasswordField;
+use bencarr\entrypassword\fields\EntryPasswordField;
 use bencarr\entrypassword\services\CookieService;
 use bencarr\entrypassword\twigextensions\EntryPasswordTwigExtension;
 use Craft;

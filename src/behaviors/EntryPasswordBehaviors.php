@@ -3,7 +3,7 @@
 namespace bencarr\entrypassword\behaviors;
 
 use bencarr\entrypassword\EntryPassword;
-use bencarr\entrypassword\fields\EntryPassword as EntryPasswordField;
+use bencarr\entrypassword\fields\EntryPasswordField;
 use Craft;
 use craft\elements\Entry;
 use craft\helpers\ArrayHelper;

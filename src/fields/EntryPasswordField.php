@@ -8,7 +8,7 @@ use craft\base\ElementInterface;
 use craft\base\Field;
 use yii\db\Schema;
 
-class EntryPassword extends Field
+class EntryPasswordField extends Field
 {
     // Public Properties
     // =========================================================================
