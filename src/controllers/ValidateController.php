@@ -8,12 +8,23 @@ use craft\elements\Entry;
 use craft\errors\MissingComponentException;
 use craft\web\Controller;
 use craft\web\Request;
+use yii\base\Exception;
+use yii\base\InvalidConfigException;
 use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
 class ValidateController extends Controller
 {
+    /** @var Request */
+    protected $request;
+    /**
+     * @var    bool|array Allows anonymous access to this controller's actions.
+     *         The actions must be in 'kebab-case'
+     * @access protected
+     */
+    protected $allowAnonymous = true;
+
     public function init()
     {
         parent::init();
@@ -21,14 +32,13 @@ class ValidateController extends Controller
         $this->request = Craft::$app->getRequest();
     }
 
-    // Protected Properties
-    // =========================================================================
-
     /**
      * @return mixed
      * @throws BadRequestHttpException
-     * @throws NotFoundHttpException
      * @throws MissingComponentException
+     * @throws NotFoundHttpException
+     * @throws Exception
+     * @throws InvalidConfigException
      */
     public function actionIndex()
     {
@@ -36,16 +46,20 @@ class ValidateController extends Controller
         $this->requireSiteRequest();
 
         $request = Craft::$app->getRequest();
-        $entryId = $request->getValidatedBodyParam('entryId');
-        $password = $request->getRequiredParam('password');
+        if ($entryId = $request->getParam('entryId')) {
+            $entry = Entry::findOne(['id' => $entryId]);
+        } else {
+            $entry = Entry::find()->uri($request->fullPath)->one();
+        }
 
-        $entry = Entry::findOne(['id' => $entryId]);
-        if (!$entry) {
+        if (!$entry || !$entry->isPasswordProtected()) {
             throw new NotFoundHttpException('Entry does not exist.');
         }
 
-        $isValid = $entry->getEntryPasswordFieldValue() === $password;
+        $password = $request->getRequiredParam('password');
+        $isValid = $entry->entryPasswordFieldValue === $password;
         if (!$isValid) {
+            $entry->addError('password', 'Invalid password.');
             return $this->returnError($entry);
         }
 
@@ -61,20 +75,16 @@ class ValidateController extends Controller
      */
     protected function returnError(Entry $entry)
     {
+        $message = Craft::t('entry-password', 'Invalid password.');
+
         if ($this->request->getAcceptsJson()) {
-            return $this->asJson([
-                'success' => false,
-                'errors' => $entry->getErrors(),
-            ]);
+            return $this->asErrorJson($message)->setStatusCode(400);
         }
 
-        Craft::$app->getSession()->setError(Craft::t('entry-password', 'Invalid password.'));
+        Craft::$app->getSession()->setError($message);
 
         return null;
     }
-
-    // Public Methods
-    // =========================================================================
 
     /**
      * @param Entry $entry
@@ -85,20 +95,10 @@ class ValidateController extends Controller
     {
         if ($this->request->getAcceptsJson()) {
             return $this->asJson([
-                'success' => true,
                 'id' => $entry->id,
             ]);
         }
 
         return $this->redirectToPostedUrl($entry);
     }
-
-    /** @var Request */
-    protected $request;
-    /**
-     * @var    bool|array Allows anonymous access to this controller's actions.
-     *         The actions must be in 'kebab-case'
-     * @access protected
-     */
-    protected $allowAnonymous = true;
 }
