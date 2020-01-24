@@ -40,7 +40,10 @@ class EntryPasswordBehaviors extends Behavior
     {
         $field = $this->getEntryPasswordField();
         if ($field) {
-            return $this->owner->getFieldValue($field->handle);
+            $value = $this->owner->getFieldValue($field->handle);
+            if ($value) {
+                return $value;
+            }
         }
 
         return null;
