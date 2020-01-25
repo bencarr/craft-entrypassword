@@ -18,4 +18,10 @@ return [
     'persistenceOptions.' . (60 * 60 * 24 * 365) => '1 Year',
     'persistenceOptions.' . (60 * 60 * 24 * 365 * 2) => '2 Years',
 
+    // Bulk Action
+    'actions.set.trigger' => 'Set entry password',
+    'actions.set.prompt' => 'Enter the new password',
+    'actions.set.empty' => 'No entries selected',
+    'actions.set.success' => 'Password set on {count}.',
+    'actions.set.error' => 'Could not update {count}.',
 ];

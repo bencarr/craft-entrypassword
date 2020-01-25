@@ -3,13 +3,16 @@
 namespace bencarr\entrypassword;
 
 use bencarr\entrypassword\behaviors\EntryPasswordBehaviors;
+use bencarr\entrypassword\elements\actions\SetPasswordAction;
 use bencarr\entrypassword\fields\EntryPasswordField;
 use bencarr\entrypassword\services\CookieService;
 use Craft;
+use craft\base\Element;
 use craft\base\Plugin;
 use craft\elements\Entry;
 use craft\events\DefineBehaviorsEvent;
 use craft\events\RegisterComponentTypesEvent;
+use craft\events\RegisterElementActionsEvent;
 use craft\events\RegisterUrlRulesEvent;
 use craft\services\Fields;
 use craft\web\UrlManager;
@@ -58,6 +61,14 @@ class EntryPassword extends Plugin
             Entry::EVENT_DEFINE_BEHAVIORS,
             function(DefineBehaviorsEvent $event) {
                 $event->behaviors[$this->id] = EntryPasswordBehaviors::class;
+            }
+        );
+
+        Event::on(
+            Entry::class,
+            Element::EVENT_REGISTER_ACTIONS,
+            function(RegisterElementActionsEvent $event) {
+                $event->actions[] = SetPasswordAction::class;
             }
         );
 
