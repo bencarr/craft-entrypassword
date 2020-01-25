@@ -8,36 +8,32 @@ This plugin requires Craft 3 or later.
 
 ## Installation
 
-Search for `bencarr/entry-password` on the Plugin Store and click “Install”. Or, install with Composer and activate with the Craft CLI:
+Search for `bencarr/entry-password` on the Plugin Store and click “Install”. Or, install with [Composer](https://getcomposer.org) and activate with the Craft CLI:
 
 ```bash
 $ composer require bencarr/entry-password
 $ ./craft install/plugin entry-password
 ```
 
-## How it Works
+## Setup
 
-* **Custom Field Type** — Add an Entry Password field to one of your entry types to allow content authors to set a password on entries. 
-* **Your Templating Logic** — Restrict the display of entry content in your templates and provide a password form when required.
-* **Validation Action** — Submit your form to the validation action to verify the provided password.
-* **Cookie** — After submitting a valid password, the validation action sets a cookie that persists that validated password.
+1. **Add a field** — Add a field to one of your entry types using the Entry Password field type. This field allows content authors to manage the password for individual entries.
+2. **Update your templates** — Use the [template behaviors](#behaviors) to restrict the display of your entry type’s content in your templates and provide a password form when required. 
+3. **Set up a password form** — Set your password form to submit to the [validation action](#validating-passwords) to verify the provided password.
 
-## Configuration Options
+### Field Configuration
 
-When configuring an Entry Password field, you can:
+When creating an Entry Password field, there are a few options you can configure:
 
-* **Require Password for Authenticated Users**<br>
-Optionally require authenticated Craft admins to also submit the password for entries when viewing the entries on the front-end.
-* **Set Cookie Expiration Duration**<br>
-Set how long a valid password cookie should persist. Defaults to the browser session. Cookies are always invalidated if the entry’s password changes.
-* **Display Field in Sidebar**<br>
-When editing an entry, display the password field value in the sidebar of the entries form instead of its normal position within a tab in the field layout. The field still appears in its field layout position when editing an entry in a HUD.
+* **Require the password for authenticated users** — Force authenticated Craft admins to provide the password when viewing the entries on the front-end.
+* **Set cookie persistence** — Set how long before a user needs to re-authenticate after providing a valid password. Defaults to the browser session. Cookies are always invalidated if the entry’s password is changed.
+* **Display the password field in the sidebar** — When editing an entry, display the password field value in the sidebar of the entries form instead of its normal position within a tab in the field layout. The field still appears in its field layout position when editing an entry in a HUD.
 
 ## Templating
 
-You’re completely in control of the experience of submitting the password, and what portions of your template are protected by the password.
+You’re have complete control of the experience of submitting the password, and what portions of your template are protected by the password.
 
-A simplified example of an entry template:
+Simplified example template:
 ```twig
 {% if entry.requiresPassword %}
     {# ...Your Password Form... #}
@@ -51,16 +47,16 @@ A simplified example of an entry template:
 There are a few behaviors available on `Entry` objects to surface plugin logic in your templates.
 
 **entry.requiresPassword** `Boolean`<br>
-Whether the visitor needs to provide a password. Will return `false` when the user has already provided the correct password (and has the cookie set on successful validation), or the user is currently logged in as a Craft admin and the Entry Password field is not set to include authenticated users.
+Whether the visitor needs to provide a password. Returns `false` when the user has already provided the correct password (and has the cookie set from successful validation), or the user is currently logged in as a Craft admin and the Entry Password field is not set to include authenticated users.
 
 **entry.isPasswordProtected** `Boolean`<br>
-Whether the entry has a password set. Will return `false` if the Entry Password field is empty on the entry, or the entry type does not have an Entry Password field in its field layout.
+Whether the entry has a password set. Returns `false` if the Entry Password field is empty on the entry, or the entry type does not have an Entry Password field in its field layout.
 
 **entry.entryPasswordField** `EntryPasswordField|null`<br>
-The Entry Password field object, with its label and settings. Will return `null` for entries without an Entry Password field.
+The Entry Password field object, with its label and settings. Returns `null` for entries without an Entry Password field.
 
 **entry.entryPasswordFieldValue** `string|null`<br>
-The raw password value from the Entry Password field. Will return `null` for entries without an Entry Password field, and entries with a blank password value. 
+The raw password value from the Entry Password field. Returns `null` for entries without an Entry Password field, and entries with a empty password value. 
 
 ## Validating Passwords
 
@@ -109,4 +105,4 @@ fetch('/actions/entry-password/validate', {
 
 ## Security
 
-This plugin should be considered completely unsecure. It is a minimally viable means to obfuscate content, and nothing more. Entry passwords are stored in plain text in the database and are visible in the password field for any content editor able to view the edit form of an entry. 
+This plugin should be considered completely unsecure. It is a minimally viable means to obfuscate content, and nothing more. Entry passwords are stored in plain text in the database and are visible in the password field for any content editor who can view the entry edit form. 
