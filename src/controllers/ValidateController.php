@@ -18,11 +18,7 @@ class ValidateController extends Controller
 {
     /** @var Request */
     protected $request;
-    /**
-     * @var    bool|array Allows anonymous access to this controller's actions.
-     *         The actions must be in 'kebab-case'
-     * @access protected
-     */
+
     protected $allowAnonymous = true;
 
     public function init()

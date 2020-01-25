@@ -11,7 +11,6 @@ use yii\web\Cookie;
 
 class CookieService extends Component
 {
-// Constants
     public const PREFIX = 'entrypassword_';
 
     /**

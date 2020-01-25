@@ -7,12 +7,6 @@ use craft\web\assets\cp\CpAsset;
 
 class EntryPasswordAsset extends AssetBundle
 {
-    // Public Methods
-    // =========================================================================
-
-    /**
-     * @inheritdoc
-     */
     public function init()
     {
         $this->sourcePath = "@bencarr/entrypassword/assetbundles/entrypassword/dist";
