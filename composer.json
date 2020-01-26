@@ -1,5 +1,5 @@
 {
-  "name": "bencarr/entry-password",
+  "name": "bencarr/craft-entrypassword",
   "description": "Password-protect individual entries with a simple password outside of Craft’s user authentication system",
   "type": "craft-plugin",
   "version": "1.0.0",
@@ -34,7 +34,7 @@
     "handle": "entry-password",
     "hasCpSettings": false,
     "hasCpSection": false,
-    "changelogUrl": "https://raw.githubusercontent.com/bencarr/craft-entrypassword/master/CHANGELOG.md",
+    "changelogUrl": "https://github.com/bencarr/craft-entrypassword/blob/master/CHANGELOG.md",
     "class": "bencarr\\entrypassword\\EntryPassword"
   }
 }

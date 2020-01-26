@@ -1,5 +1,6 @@
 <?php
 return [
+    'Entry Password' => 'Entry Password',
     'Entry Password plugin loaded' => 'Entry Password plugin loaded',
 
     // Settings Fields

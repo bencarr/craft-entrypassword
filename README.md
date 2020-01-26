@@ -1,5 +1,7 @@
 # Entry Password
 
+![Icon with colorful gradient background and abstract stack of papers with a lock graphic](./src/icon.svg)
+
 A [Craft CMS 3.x](https://docs.craftcms.com/v3/) plugin to password-protect individual entries with a simple password completely separate from Craft’s user authentication system. 
 
 ## Requirements
@@ -8,10 +10,10 @@ This plugin requires Craft 3 or later.
 
 ## Installation
 
-Search for `bencarr/entry-password` on the Plugin Store and click “Install”. Or, install with [Composer](https://getcomposer.org) and activate with the Craft CLI:
+Search for `bencarr/craft-entrypassword` on the Plugin Store and click “Install”. Or, install with [Composer](https://getcomposer.org) and activate with the Craft CLI:
 
 ```bash
-$ composer require bencarr/entry-password
+$ composer require bencarr/craft-entrypassword
 $ ./craft install/plugin entry-password
 ```
 
