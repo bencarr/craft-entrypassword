@@ -6,9 +6,10 @@ use bencarr\entrypassword\assetbundles\entrypassword\EntryPasswordAsset;
 use Craft;
 use craft\base\ElementInterface;
 use craft\base\Field;
+use craft\base\PreviewableFieldInterface;
 use yii\db\Schema;
 
-class EntryPasswordField extends Field
+class EntryPasswordField extends Field implements PreviewableFieldInterface
 {
     public $requiredForAuthenticatedUsers = false;
 
@@ -36,17 +37,7 @@ class EntryPasswordField extends Field
         return Schema::TYPE_TEXT;
     }
 
-    public function normalizeValue($value, ElementInterface $element = null)
-    {
-        return $value;
-    }
-
-    public function serializeValue($value, ElementInterface $element = null)
-    {
-        return parent::serializeValue($value, $element);
-    }
-
-    public function getSettingsHtml()
+    public function getSettingsHtml(): string
     {
         return Craft::$app->getView()->renderTemplate(
             'entry-password/_components/fields/EntryPassword_settings',
@@ -66,7 +57,7 @@ class EntryPasswordField extends Field
         );
     }
 
-    public function getSidebarInputHtml($value)
+    public function getSidebarInputHtml($value): string
     {
         // Register our asset bundle
         Craft::$app->getView()->registerAssetBundle(EntryPasswordAsset::class);
@@ -80,7 +71,7 @@ class EntryPasswordField extends Field
         );
     }
 
-    public function getPersistenceOptions()
+    public function getPersistenceOptions(): array
     {
         $options = [
             0, // Browser session
@@ -98,7 +89,7 @@ class EntryPasswordField extends Field
         }, $options);
     }
 
-    protected function getInputContext(array $context = [])
+    protected function getInputContext(array $context = []): array
     {
         $id = Craft::$app->getView()->formatInputId($this->handle);
         $namespacedId = Craft::$app->getView()->namespaceInputId($id);
@@ -110,5 +101,10 @@ class EntryPasswordField extends Field
             'id' => $id,
             'namespacedId' => $namespacedId,
         ], $context);
+    }
+
+    public function getTableAttributeHtml($value, ElementInterface $element): string
+    {
+        return (string)$value;
     }
 }
