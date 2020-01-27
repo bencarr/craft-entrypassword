@@ -1,7 +1,5 @@
 # Entry Password
 
-![Icon with colorful gradient background and abstract stack of papers with a lock graphic](./src/icon.svg)
-
 A [Craft CMS 3.x](https://docs.craftcms.com/v3/) plugin to password-protect individual entries with a simple password completely separate from Craft’s user authentication system. 
 
 ## Requirements
