@@ -3,6 +3,9 @@ return [
     'Entry Password' => 'Entry Password',
     'Entry Password plugin loaded' => 'Entry Password plugin loaded',
 
+	// Validation
+	'Invalid password.' => 'Invalid password.',
+
     // Settings Fields
     'requiredForAuthenticatedUsers.label' => 'Require Password for Authenticated Users',
     'requiredForAuthenticatedUsers.instructions' => 'Require authenticated Craft admins also enter the password to view the entry template.',

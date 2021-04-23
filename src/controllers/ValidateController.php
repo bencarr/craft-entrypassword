@@ -55,7 +55,7 @@ class ValidateController extends Controller
         $password = $request->getRequiredParam('password');
         $isValid = $entry->entryPasswordFieldValue === $password;
         if (!$isValid) {
-            $entry->addError('password', 'Invalid password.');
+            $entry->addError('password', $this->getInvalidPasswordMessage());
             return $this->returnError($entry);
         }
 
@@ -71,7 +71,7 @@ class ValidateController extends Controller
      */
     protected function returnError(Entry $entry)
     {
-        $message = Craft::t('entry-password', 'Invalid password.');
+        $message = $this->getInvalidPasswordMessage();
 
         if ($this->request->getAcceptsJson()) {
             return $this->asErrorJson($message)->setStatusCode(400);
@@ -96,5 +96,13 @@ class ValidateController extends Controller
         }
 
         return $this->redirectToPostedUrl($entry);
+    }
+
+	/**
+	 * @return string
+	 */
+    protected function getInvalidPasswordMessage()
+    {
+	    return Craft::t('entry-password', 'Invalid password.');
     }
 }
