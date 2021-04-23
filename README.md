@@ -1,6 +1,6 @@
 # Entry Password
 
-A [Craft CMS 3.x](https://docs.craftcms.com/v3/) plugin to password-protect individual entries with a simple password completely separate from Craft’s user authentication system. 
+A [Craft CMS 3](https://docs.craftcms.com/v3/) plugin to password-protect individual entries with a simple password completely separate from Craft’s user authentication system. 
 
 ## Requirements
 
@@ -47,7 +47,7 @@ Simplified example template:
 There are a few behaviors available on `Entry` objects to surface plugin logic in your templates.
 
 **entry.requiresPassword** `Boolean`<br>
-Whether the visitor needs to provide a password. Returns `false` when the user has already provided the correct password (and has the cookie set from successful validation), or the user is currently logged in as a Craft admin and the Entry Password field is not set to include authenticated users.
+Whether the visitor needs to provide a password. Returns `false` when the user has already provided the correct password (and has the cookie set from successful validation), or the user is currently logged in as a Craft admin, and the Entry Password field is not set to include authenticated users.
 
 **entry.isPasswordProtected** `Boolean`<br>
 Whether the entry has a password set. Returns `false` if the Entry Password field is empty on the entry, or the entry type does not have an Entry Password field in its field layout.
@@ -56,7 +56,7 @@ Whether the entry has a password set. Returns `false` if the Entry Password fiel
 The Entry Password field object, with its label and settings. Returns `null` for entries without an Entry Password field.
 
 **entry.entryPasswordFieldValue** `string|null`<br>
-The raw password value from the Entry Password field. Returns `null` for entries without an Entry Password field, and entries with a empty password value. 
+The raw password value from the Entry Password field. Returns `null` for entries without an Entry Password field, and entries with an empty password value. 
 
 ## Validating Passwords
 
@@ -110,7 +110,7 @@ This plugin should be considered completely unsecure. It is a minimally viable m
 ## Questions
 
 **Can I add a password to multiple entries at the same time?**<br>
-Yes. From an entries index, select the entries you want to update, then select “Set entry password” from the actions menu.
+Yes. From an entries index, select the entries you want to update, then select “Set entry password” from the action menu.
 
 **Can I view all my entries that have passwords?**<br>
 Probably. As long as your Entry Password field is included in the search index, you can use Craft’s [wildcard field search](https://docs.craftcms.com/v3/searching.html) to find entries with a value in your password field. For example, if your password field’s handle is `publicPassword`, a search in the entries index for `publicPassword:*` would return entries with any value in that field.

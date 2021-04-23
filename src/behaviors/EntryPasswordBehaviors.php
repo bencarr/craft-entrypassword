@@ -6,37 +6,52 @@ use bencarr\entrypassword\EntryPassword;
 use bencarr\entrypassword\fields\EntryPasswordField;
 use Craft;
 use craft\elements\Entry;
+use craft\errors\InvalidFieldException;
 use craft\helpers\ArrayHelper;
 use yii\base\Behavior;
+use yii\base\Exception;
+use yii\base\InvalidConfigException;
 
 /**
- * @property Entry $owner
+ * @property-read Entry $owner
+ * @property-read ?EntryPasswordField $entryPasswordField
+ * @property-read ?string $entryPasswordFieldValue
  */
 class EntryPasswordBehaviors extends Behavior
 {
-    public function requiresPassword()
+    /**
+     * @throws Exception
+     * @throws InvalidConfigException
+     */
+    public function requiresPassword(): bool
     {
         if (!$this->isPasswordProtected()) {
             return false;
         }
-
+        
         if (EntryPassword::getInstance()->cookie->isValid($this->owner)) {
             return false;
         }
-
+        
         if (Craft::$app->getUser()->getIsAdmin()) {
             return $this->getEntryPasswordField()->requiredForAuthenticatedUsers;
         }
-
+        
         return true;
     }
-
-    public function isPasswordProtected()
+    
+    /**
+     * @throws InvalidFieldException
+     */
+    public function isPasswordProtected(): bool
     {
         return !empty($this->getEntryPasswordFieldValue());
     }
-
-    public function getEntryPasswordFieldValue()
+    
+    /**
+     * @throws InvalidFieldException
+     */
+    public function getEntryPasswordFieldValue(): ?string
     {
         $field = $this->getEntryPasswordField();
         if ($field) {
@@ -45,26 +60,21 @@ class EntryPasswordBehaviors extends Behavior
                 return $value;
             }
         }
-
+        
         return null;
     }
-
-    /**
-     * @return EntryPasswordField|null
-     */
-    public function getEntryPasswordField()
+    
+    public function getEntryPasswordField(): ?EntryPasswordField
     {
         $layout = $this->owner->getFieldLayout();
         if ($layout) {
             return ArrayHelper::firstWhere(
                 $layout->getFields(),
-                function($field) {
-                    return get_class($field);
-                },
+                fn($field) => get_class($field),
                 EntryPasswordField::class
             );
         }
-
+        
         return null;
     }
 }

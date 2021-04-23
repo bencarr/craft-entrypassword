@@ -7,22 +7,28 @@ use Craft;
 use craft\base\ElementInterface;
 use craft\base\Field;
 use craft\base\PreviewableFieldInterface;
+use craft\helpers\Html;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
+use yii\base\Exception;
+use yii\base\InvalidConfigException;
 use yii\db\Schema;
 
 class EntryPasswordField extends Field implements PreviewableFieldInterface
 {
-    public $requiredForAuthenticatedUsers = false;
+    public bool $requiredForAuthenticatedUsers = false;
 
-    public $cookieExpiration = 0;
+    public int $cookieExpiration = 0;
 
-    public $displaysInSidebar = true;
+    public bool $displaysInSidebar = true;
 
     public static function displayName(): string
     {
         return Craft::t('entry-password', 'Entry Password');
     }
 
-    public function rules()
+    public function rules(): array
     {
         $rules = parent::rules();
         $rules[] = [['requiredForAuthenticatedUsers'], 'boolean'];
@@ -36,7 +42,13 @@ class EntryPasswordField extends Field implements PreviewableFieldInterface
     {
         return Schema::TYPE_TEXT;
     }
-
+    
+    /**
+     * @throws SyntaxError
+     * @throws Exception
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
     public function getSettingsHtml(): string
     {
         return Craft::$app->getView()->renderTemplate(
@@ -46,7 +58,13 @@ class EntryPasswordField extends Field implements PreviewableFieldInterface
             ]
         );
     }
-
+    
+    /**
+     * @throws SyntaxError
+     * @throws Exception
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
     public function getInputHtml($value, ElementInterface $element = null): string
     {
         return Craft::$app->getView()->renderTemplate(
@@ -56,7 +74,14 @@ class EntryPasswordField extends Field implements PreviewableFieldInterface
             ])
         );
     }
-
+    
+    /**
+     * @throws SyntaxError
+     * @throws InvalidConfigException
+     * @throws Exception
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
     public function getSidebarInputHtml($value): string
     {
         // Register our asset bundle
@@ -81,7 +106,7 @@ class EntryPasswordField extends Field implements PreviewableFieldInterface
             60 * 60 * 24 * 365, // 1 Year
         ];
 
-        return array_map(function($value) {
+        return array_map(static function($value) {
             return [
                 'value' => $value,
                 'label' => Craft::t('entry-password', 'persistenceOptions.' . $value),
@@ -91,7 +116,7 @@ class EntryPasswordField extends Field implements PreviewableFieldInterface
 
     protected function getInputContext(array $context = []): array
     {
-        $id = Craft::$app->getView()->formatInputId($this->handle);
+        $id = Html::id($this->handle);
         $namespacedId = Craft::$app->getView()->namespaceInputId($id);
 
         return array_merge([

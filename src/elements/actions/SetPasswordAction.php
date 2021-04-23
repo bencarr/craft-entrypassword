@@ -8,18 +8,12 @@ use craft\helpers\Json;
 
 class SetPasswordAction extends ElementAction
 {
-    /**
-     * @inheritdoc
-     */
     public function getTriggerLabel(): string
     {
         return Craft::t('entry-password', 'actions.set.trigger');
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getTriggerHtml()
+    public function getTriggerHtml(): void
     {
         $type = Json::encode(static::class);
         $prompt = Json::encode(Craft::t('entry-password', 'actions.set.prompt'));
@@ -27,7 +21,7 @@ class SetPasswordAction extends ElementAction
         $js = <<<EOD
 (function() {
     var trigger = new Craft.ElementActionTrigger({
-        type: {$type},
+        type: $type,
         batch: true,
         activate: function(\$selectedItems) {
             var data = {
@@ -36,7 +30,7 @@ class SetPasswordAction extends ElementAction
                 }).toArray(),
             };
             
-            data.password = prompt({$prompt});
+            data.password = prompt($prompt);
             if (data.password == null) {
                 return;
             }

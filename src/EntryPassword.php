@@ -19,22 +19,15 @@ use craft\web\UrlManager;
 use yii\base\Event;
 
 /**
- * @property CookieService $cookie
- *
+ * @property-read CookieService $cookie
  */
 class EntryPassword extends Plugin
 {
-    /**
-     * @var EntryPassword
-     */
-    public static $plugin;
-
     public $schemaVersion = '1.0.0';
 
-    public function init()
+    public function init(): void
     {
         parent::init();
-        self::$plugin = $this;
 
         $this->setComponents([
             'cookie' => CookieService::class,
@@ -72,7 +65,7 @@ class EntryPassword extends Plugin
             }
         );
 
-        Craft::$app->view->hook('cp.entries.edit.settings', function(array &$context) {
+        Craft::$app->view->hook('cp.entries.edit.settings', function(array $context) {
             /** @var Entry $entry */
             $entry = $context['entry'];
 
@@ -84,7 +77,5 @@ class EntryPassword extends Plugin
 
             return null;
         });
-
-        Craft::info(Craft::t('entry-password', 'Entry Password plugin loaded',), __METHOD__);
     }
 }
