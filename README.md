@@ -31,7 +31,7 @@ When creating an Entry Password field, there are a few options you can configure
 
 ## Templating
 
-You’re have complete control of the experience of submitting the password, and what portions of your template are protected by the password.
+You have complete control of the experience of submitting the password, and what portions of your template are protected by the password.
 
 Simplified example template:
 ```twig
@@ -120,4 +120,3 @@ A cookie. After submitting a valid password for an entry, the validate action se
 
 **If I change the entry’s password, will users who had the old password still have access?**<br>
 No. Since the cookie is re-validated on each request, and the cookie value is a masked version of the submitted password, it won’t match the new password, so the user will be prompted for a password.
-
