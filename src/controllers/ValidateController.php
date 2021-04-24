@@ -7,7 +7,6 @@ use Craft;
 use craft\elements\Entry;
 use craft\errors\MissingComponentException;
 use craft\web\Controller;
-use craft\web\Request;
 use yii\base\Exception;
 use yii\base\InvalidConfigException;
 use yii\web\BadRequestHttpException;
@@ -16,16 +15,7 @@ use yii\web\Response;
 
 class ValidateController extends Controller
 {
-    protected Request $request;
-    
     protected $allowAnonymous = true;
-    
-    public function init(): void
-    {
-        parent::init();
-        
-        $this->request = Craft::$app->getRequest();
-    }
     
     /**
      * @throws BadRequestHttpException
