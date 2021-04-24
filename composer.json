@@ -11,14 +11,14 @@
     "entry password"
   ],
   "support": {
-    "docs": "https://github.com/bencarr/craft-entrypassword/blob/master/README.md",
+    "docs": "https://github.com/bencarr/craft-entrypassword/blob/main/README.md",
     "issues": "https://github.com/bencarr/craft-entrypassword/issues"
   },
   "license": "MIT",
   "authors": [
     {
       "name": "Ben Carr",
-      "homepage": "https://bencarr.me"
+      "homepage": "https://github.com/bencarr"
     }
   ],
   "require": {
@@ -33,9 +33,12 @@
   "extra": {
     "name": "Entry Password",
     "handle": "entry-password",
+    "developer": "Ben Carr",
+    "developerUrl": "https://github.com/bencarr",
     "hasCpSettings": false,
     "hasCpSection": false,
-    "changelogUrl": "https://github.com/bencarr/craft-entrypassword/blob/master/CHANGELOG.md",
+    "documentationUrl": "https://github.com/bencarr/craft-entrypassword/blob/main/README.md",
+    "changelogUrl": "https://github.com/bencarr/craft-entrypassword/blob/main/CHANGELOG.md",
     "class": "bencarr\\entrypassword\\EntryPassword"
   }
 }
