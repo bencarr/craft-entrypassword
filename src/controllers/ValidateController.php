@@ -24,7 +24,7 @@ class ValidateController extends Controller
      * @throws Exception
      * @throws InvalidConfigException
      */
-    public function actionIndex(): Response
+    public function actionIndex(): ?Response
     {
         $this->requirePostRequest();
         $this->requireSiteRequest();
@@ -54,10 +54,10 @@ class ValidateController extends Controller
     
     /**
      * @param  Entry  $entry
-     * @return Response
+     * @return ?Response
      * @throws MissingComponentException
      */
-    protected function returnError(Entry $entry): Response
+    protected function returnError(Entry $entry): ?Response
     {
         $message = $this->getInvalidPasswordMessage();
         
@@ -67,7 +67,7 @@ class ValidateController extends Controller
         
         Craft::$app->getSession()->setError($message);
         
-        return $this->response;
+        return null;
     }
     
     /**
