@@ -12,7 +12,7 @@ Search for `bencarr/craft-entrypassword` on the Plugin Store and click “Instal
 
 ```bash
 $ composer require bencarr/craft-entrypassword
-$ ./craft install/plugin entry-password
+$ ./craft plugin/install entry-password
 ```
 
 ## Setup
